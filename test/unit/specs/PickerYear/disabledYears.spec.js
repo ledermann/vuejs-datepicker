@@ -38,7 +38,7 @@ describe('PickerYear', () => {
       }
     })
     expect(wrapper.vm.isPreviousDecadeDisabled()).toEqual(true)
-    expect(wrapper.vm.isNextDecadeDisabled()).toEqual(true)
+    expect(wrapper.vm.isNextDecadeDisabled()).toEqual(false)
   })
 
   it('can change decade despite having a disabled decade', () => {

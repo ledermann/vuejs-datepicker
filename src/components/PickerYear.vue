@@ -43,8 +43,8 @@ export default {
       let years = []
       // set up a new date object to the beginning of the current 'page'7
       let dObj = this.useUtc
-        ? new Date(Date.UTC(Math.floor(d.getUTCFullYear() / 10) * 10, d.getUTCMonth(), d.getUTCDate()))
-        : new Date(Math.floor(d.getFullYear() / 10) * 10, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes())
+        ? new Date(Date.UTC(d.getUTCFullYear() - 9, d.getUTCMonth(), d.getUTCDate()))
+        : new Date(d.getFullYear() - 9, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes())
       for (let i = 0; i < 10; i++) {
         years.push({
           year: this.utils.getFullYear(dObj),
@@ -60,7 +60,7 @@ export default {
      * @return {String}
      */
     getPageDecade () {
-      const decadeStart = Math.floor(this.utils.getFullYear(this.pageDate) / 10) * 10
+      const decadeStart = this.utils.getFullYear(this.pageDate) - 9
       const decadeEnd = decadeStart + 9
       const yearSuffix = this.translation.yearSuffix
       return `${decadeStart} - ${decadeEnd}${yearSuffix}`
@@ -113,7 +113,7 @@ export default {
         return false
       }
       const disabledYear = this.utils.getFullYear(this.disabledDates.to)
-      const lastYearInPreviousPage = Math.floor(this.utils.getFullYear(this.pageDate) / 10) * 10 - 1
+      const lastYearInPreviousPage = this.utils.getFullYear(this.pageDate) - 9 - 1
       return disabledYear > lastYearInPreviousPage
     },
     nextDecade () {
@@ -127,7 +127,7 @@ export default {
         return false
       }
       const disabledYear = this.utils.getFullYear(this.disabledDates.from)
-      const firstYearInNextPage = Math.ceil(this.utils.getFullYear(this.pageDate) / 10) * 10
+      const firstYearInNextPage = this.utils.getFullYear(this.pageDate) + 1
       return disabledYear < firstYearInNextPage
     },
 
