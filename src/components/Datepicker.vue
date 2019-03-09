@@ -82,6 +82,7 @@
       :showYearView="showYearView"
       :allowedToShowView="allowedToShowView"
       :disabledDates="disabledDates"
+      :rollingDecades="rollingDecades"
       :calendarClass="calendarClass"
       :calendarStyle="calendarStyle"
       :translation="translation"
@@ -142,6 +143,7 @@ export default {
     calendarButtonIconContent: String,
     bootstrapStyling: Boolean,
     initialView: String,
+    rollingDecades: Boolean,
     disabled: Boolean,
     required: Boolean,
     typeable: Boolean,

@@ -29,6 +29,7 @@ export default {
     pageDate: Date,
     pageTimestamp: Number,
     disabledDates: Object,
+    rollingDecades: Boolean,
     highlighted: Object,
     calendarClass: [String, Object, Array],
     calendarStyle: Object,
@@ -40,11 +41,12 @@ export default {
   computed: {
     years () {
       const d = this.pageDate
+      const year = this.beginOfDecade(d)
       let years = []
       // set up a new date object to the beginning of the current 'page'7
       let dObj = this.useUtc
-        ? new Date(Date.UTC(d.getUTCFullYear() - 9, d.getUTCMonth(), d.getUTCDate()))
-        : new Date(d.getFullYear() - 9, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes())
+        ? new Date(Date.UTC(year, d.getUTCMonth(), d.getUTCDate()))
+        : new Date(year, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes())
       for (let i = 0; i < 10; i++) {
         years.push({
           year: this.utils.getFullYear(dObj),
@@ -60,7 +62,7 @@ export default {
      * @return {String}
      */
     getPageDecade () {
-      const decadeStart = this.utils.getFullYear(this.pageDate) - 9
+      const decadeStart = this.beginOfDecade(this.pageDate)
       const decadeEnd = decadeStart + 9
       const yearSuffix = this.translation.yearSuffix
       return `${decadeStart} - ${decadeEnd}${yearSuffix}`
@@ -102,6 +104,25 @@ export default {
       this.utils.setFullYear(date, this.utils.getFullYear(date) + incrementBy)
       this.$emit('changedDecade', date)
     },
+    beginOfDecade (date) {
+      const year = this.utils.getFullYear(date)
+      const realDecadeBegin = Math.floor(year / 10) * 10
+
+      if (this.rollingDecades && this.disabledDates && this.disabledDates.from) {
+        const maxYear = this.utils.getFullYear(this.disabledDates.from)
+        const maxRealDecadeBegin = Math.floor(maxYear / 10) * 10
+        const offset = 9 - (maxYear - maxRealDecadeBegin)
+        const rollingDecadeBegin = realDecadeBegin - offset
+
+        if (rollingDecadeBegin <= year - 10) {
+          return rollingDecadeBegin + 10
+        } else {
+          return rollingDecadeBegin
+        }
+      } else {
+        return realDecadeBegin
+      }
+    },
     previousDecade () {
       if (this.isPreviousDecadeDisabled()) {
         return false
@@ -113,7 +134,7 @@ export default {
         return false
       }
       const disabledYear = this.utils.getFullYear(this.disabledDates.to)
-      const lastYearInPreviousPage = this.utils.getFullYear(this.pageDate) - 9 - 1
+      const lastYearInPreviousPage = this.beginOfDecade(this.pageDate) - 1
       return disabledYear > lastYearInPreviousPage
     },
     nextDecade () {
@@ -127,7 +148,7 @@ export default {
         return false
       }
       const disabledYear = this.utils.getFullYear(this.disabledDates.from)
-      const firstYearInNextPage = this.utils.getFullYear(this.pageDate) + 1
+      const firstYearInNextPage = this.beginOfDecade(this.pageDate) + 10
       return disabledYear < firstYearInNextPage
     },
 

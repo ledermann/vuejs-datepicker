@@ -38,7 +38,7 @@ describe('PickerYear', () => {
       }
     })
     expect(wrapper.vm.isPreviousDecadeDisabled()).toEqual(true)
-    expect(wrapper.vm.isNextDecadeDisabled()).toEqual(false)
+    expect(wrapper.vm.isNextDecadeDisabled()).toEqual(true)
   })
 
   it('can change decade despite having a disabled decade', () => {
@@ -87,5 +87,39 @@ describe('PickerYear', () => {
       }
     })
     expect(wrapper.vm.isNextDecadeDisabled()).toEqual(true)
+  })
+})
+
+describe('PickerYear with rollingDecades', () => {
+  let wrapper
+  beforeEach(() => {
+    wrapper = shallowMount(PickerYear, {
+      propsData: {
+        allowedToShowView: () => true,
+        translation: en,
+        pageDate: new Date(2019, 3, 9),
+        selectedDate: new Date(2000, 0, 1),
+        rollingDecades: true,
+        disabledDates: {
+          to: new Date(1919, 0, 1),
+          from: new Date(2003, 0, 1)
+        }
+      }
+    })
+  })
+
+  it('calcs beginOfDecade', () => {
+    expect(wrapper.vm.beginOfDecade(new Date(2003, 0, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(2002, 0, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(2001, 0, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(2000, 0, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(1999, 5, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(1998, 5, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(1997, 5, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(1996, 5, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(1995, 5, 1))).toEqual(1994)
+    expect(wrapper.vm.beginOfDecade(new Date(1994, 5, 1))).toEqual(1994)
+
+    expect(wrapper.vm.beginOfDecade(new Date(1993, 11, 31))).toEqual(1984)
   })
 })
