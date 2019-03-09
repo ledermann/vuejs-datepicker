@@ -1,6 +1,6 @@
 {
-  "name": "vuejs-datepicker",
-  "version": "1.5.4",
+  "name": "@ledermann/vuejs-datepicker-fork",
+  "version": "1.6.0",
   "description": "A simple Vue.js datepicker component. Supports disabling of dates, inline mode, translations",
   "keywords": [
     "vue",
@@ -16,12 +16,15 @@
     "dist"
   ],
   "author": "Charlie Kassel <ck@charliekassel.com>",
+  "contributors": [
+    "Georg Ledermann <mail@georg-ledermann.de> (https://www.georg-ledermann.de)"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/charliekassel/vuejs-datepicker"
+    "url": "https://github.com/ledermann/vuejs-datepicker"
   },
   "bugs": {
-    "url": "https://github.com/charliekassel/vuejs-datepicker/issues"
+    "url": "https://github.com/ledermann/vuejs-datepicker/issues"
   },
   "private": false,
   "license": "MIT",
